@@ -1,0 +1,16 @@
+<button onclick="showRecipe('Maggi')">Maggi</button>
+  <button onclick="showRecipe('Bread')">Bread</button>
+
+  <p id="result"></p>
+
+  <script>
+    function showRecipe(item) {
+      if(item === 'Maggi') {
+        document.getElementById("result").innerText = "Boil water, add maggi, cook 2 min.";
+      } else {
+        document.getElementById("result").innerText = "Make sandwich with bread.";
+      }
+    }
+  </script>
+</body>
+</html>
