@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Ultimate Recipe AI</title>
+  <title>Ultimate Recipe App</title>
 
   <style>
     body {
@@ -17,20 +17,25 @@
 
     textarea {
       width: 80%;
-      height: 80px;
+      height: 90px;
       padding: 10px;
       border-radius: 10px;
       border: none;
+      font-size: 16px;
     }
 
     button {
-      margin: 10px;
+      margin: 8px;
       padding: 12px 20px;
       border: none;
       border-radius: 20px;
       background: #ffcc00;
       cursor: pointer;
       font-weight: bold;
+    }
+
+    button:hover {
+      transform: scale(1.1);
     }
 
     #result {
@@ -59,18 +64,18 @@
 
 <body>
 
-  <h1>🤖🎮 Ultimate Recipe AI</h1>
+  <h1>🤖🎮 Ultimate Recipe App</h1>
 
-  <p>Type OR Speak ingredients 👇</p>
+  <p>Type or Speak ingredients 👇</p>
 
-  <textarea id="ingredients" placeholder="egg, bread"></textarea><br>
+  <textarea id="ingredients" placeholder="egg, bread, milk"></textarea><br>
 
   <button onclick="startVoice()">🎤 Speak</button>
   <button onclick="generateRecipe()">✨ Generate Recipe</button>
 
   <div id="score">🏆 Points: 0</div>
 
-  <div id="result">Your recipe will appear here...</div>
+  <div id="result">Your recipes will appear here 😋</div>
 
   <audio id="clickSound" src="https://www.soundjay.com/buttons/sounds/button-09.mp3"></audio>
 
@@ -89,36 +94,50 @@
 
       let recipes = [];
 
+      // SMART RECIPE MATCHING
       if (input.includes("egg") && input.includes("bread")) {
-        recipes.push("🍞🥚 Egg Sandwich");
+        recipes.push("🍞🥚 Egg Sandwich: Cook egg, toast bread, combine.");
         points += 10;
       }
 
       if (input.includes("milk") && input.includes("rice")) {
-        recipes.push("🍚🥛 Rice Kheer");
+        recipes.push("🍚🥛 Rice Kheer: Boil milk, add rice, cook sweet.");
         points += 10;
       }
 
       if (input.includes("maggi")) {
-        recipes.push("🍜 Maggi");
+        recipes.push("🍜 Maggi: Boil water, add noodles & masala.");
         points += 5;
       }
 
+      if (input.includes("bread") && input.includes("milk")) {
+        recipes.push("🍞🥛 Bread Pudding: Mix and cook.");
+        points += 8;
+      }
+
+      if (input.includes("egg") && input.includes("rice")) {
+        recipes.push("🍳🍚 Egg Fried Rice: Fry rice with egg.");
+        points += 12;
+      }
+
+      // RESULT
       if (recipes.length === 0) {
-        result.innerText = "😅 No recipe found!";
+        result.innerText = "😅 No recipe found. Try new ingredients!";
       } else {
-        result.innerText = "🎉 " + recipes.join(", ");
+        result.innerText = "🎉 Recipes:\n\n" + recipes.join("\n\n");
       }
 
       document.getElementById("score").innerText = "🏆 Points: " + points;
     }
 
+    // VOICE INPUT
     function startVoice() {
       let recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
       recognition.start();
 
       recognition.onresult = function(event) {
-        document.getElementById("ingredients").value = event.results[0][0].transcript;
+        document.getElementById("ingredients").value =
+          event.results[0][0].transcript;
       }
     }
   </script>
