@@ -1,16 +1,127 @@
-<button onclick="showRecipe('Maggi')">Maggi</button>
-  <button onclick="showRecipe('Bread')">Bread</button>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Ultimate Recipe AI</title>
 
-  <p id="result"></p>
+  <style>
+    body {
+      font-family: Arial;
+      text-align: center;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+    }
+
+    h1 {
+      font-size: 40px;
+    }
+
+    textarea {
+      width: 80%;
+      height: 80px;
+      padding: 10px;
+      border-radius: 10px;
+      border: none;
+    }
+
+    button {
+      margin: 10px;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 20px;
+      background: #ffcc00;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    #result {
+      margin-top: 20px;
+      padding: 20px;
+      background: white;
+      color: black;
+      border-radius: 15px;
+      display: inline-block;
+      max-width: 400px;
+      animation: fade 0.5s;
+    }
+
+    #score {
+      margin-top: 10px;
+      font-size: 18px;
+    }
+
+    @keyframes fade {
+      from {opacity: 0;}
+      to {opacity: 1;}
+    }
+  </style>
+
+</head>
+
+<body>
+
+  <h1>🤖🎮 Ultimate Recipe AI</h1>
+
+  <p>Type OR Speak ingredients 👇</p>
+
+  <textarea id="ingredients" placeholder="egg, bread"></textarea><br>
+
+  <button onclick="startVoice()">🎤 Speak</button>
+  <button onclick="generateRecipe()">✨ Generate Recipe</button>
+
+  <div id="score">🏆 Points: 0</div>
+
+  <div id="result">Your recipe will appear here...</div>
+
+  <audio id="clickSound" src="https://www.soundjay.com/buttons/sounds/button-09.mp3"></audio>
 
   <script>
-    function showRecipe(item) {
-      if(item === 'Maggi') {
-        document.getElementById("result").innerText = "Boil water, add maggi, cook 2 min.";
+    let points = 0;
+
+    function playSound() {
+      document.getElementById("clickSound").play();
+    }
+
+    function generateRecipe() {
+      playSound();
+
+      let input = document.getElementById("ingredients").value.toLowerCase();
+      let result = document.getElementById("result");
+
+      let recipes = [];
+
+      if (input.includes("egg") && input.includes("bread")) {
+        recipes.push("🍞🥚 Egg Sandwich");
+        points += 10;
+      }
+
+      if (input.includes("milk") && input.includes("rice")) {
+        recipes.push("🍚🥛 Rice Kheer");
+        points += 10;
+      }
+
+      if (input.includes("maggi")) {
+        recipes.push("🍜 Maggi");
+        points += 5;
+      }
+
+      if (recipes.length === 0) {
+        result.innerText = "😅 No recipe found!";
       } else {
-        document.getElementById("result").innerText = "Make sandwich with bread.";
+        result.innerText = "🎉 " + recipes.join(", ");
+      }
+
+      document.getElementById("score").innerText = "🏆 Points: " + points;
+    }
+
+    function startVoice() {
+      let recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+      recognition.start();
+
+      recognition.onresult = function(event) {
+        document.getElementById("ingredients").value = event.results[0][0].transcript;
       }
     }
   </script>
+
 </body>
 </html>
